@@ -3,34 +3,87 @@
 // import express from "express";  ex6
 
 import axios from "axios";
-import dotenv from "dotenv";
+import encrypt from "bcryptjs";
 import express from "express";
 
 const app = express();
-dotenv.config();
+
+const users = [];
 
 app.use(express.json());
-app.use((req, res, next) => {
-  console.log("Checking the key");
-});
+
+const API_KEY = "your api here";
 
 app.get("/weather/:key/:city", async (req, res) => {
   const city = req.params.city;
+  const key = req.params.key;
 
-  axios
-    .get(
-      `http://api.weatherapi.com/v1/current.json?key=${process.env.API_KEY}&q=${city}`
-    )
-    .then((response) =>
+  if (key.toString() === "mySecretkey") {
+    try {
+      const response = await axios.get(
+        `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`
+      );
+
+      const capital = response.data.location.region;
+
       res.json({
         data: response.data,
-      })
-    );
+        capital,
+      });
+    } catch (error) {
+      res.json({
+        data: {},
+        err: "Something went wrong",
+        errMsg: error.message,
+        statusCode: error.response.status,
+      });
+    }
+  } else {
+    res.status(401).json({
+      msg: "Please provide an API key for this route",
+    });
+  }
 });
 
-app.post("/login", (req, res) => {
+app.post("/register", async (req, res) => {
   const { email, password } = req.body;
-  res.send(`${email} and ${password}`);
+
+  if (!email || !password) {
+    res.status(404).json({
+      msg: "Empty fields"
+    })
+  }
+
+  const encryptedPassword = await encrypt.hash(password, 12);
+
+  users.push({
+    email,
+    password: encryptedPassword,
+  });
+
+  res.status(201).json({
+    msg: "Registered successfully",
+  });
+
+  console.log(users);
+});
+
+app.post("/reset-password", async (req, res) => {
+  const { email, password, newPassword } = req.body;
+
+  for (let i = 0; i < users.length; i++) {
+    if (users[i].email === email) {
+      if (await encrypt.compare(password, users[i].password)) {
+        res.status(201).json({
+          msg: "Your password was changed successfully",
+        });
+      } else {
+        res.status(500).json({
+          msg: "Your password don't match from DB",
+        });
+      }
+    }
+  }
 });
 
 app.listen(3000);
