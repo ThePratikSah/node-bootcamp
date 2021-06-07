@@ -20,6 +20,7 @@ const login = async (req, res) => {
       });
 
     // if exists, match the password and if valid, return a token
+    const id = user.id;
     const passwordFromDb = user.password;
     const profileImg = user.profileImage;
 
@@ -32,12 +33,13 @@ const login = async (req, res) => {
 
     const token = jwt.sign(
       {
+        id,
         email,
         profileImg,
       },
       "my-random-string-for-encoding",
       {
-        expiresIn: "30000",
+        expiresIn: "1d",
       }
     );
 
