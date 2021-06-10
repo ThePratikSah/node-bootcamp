@@ -8,6 +8,14 @@ const User = conn.define("user", {
     autoIncrement: true,
     primaryKey: true,
   },
+  fullName: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  userName: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
   email: {
     type: Sequelize.STRING,
     allowNull: false,

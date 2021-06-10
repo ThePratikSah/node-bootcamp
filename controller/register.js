@@ -1,4 +1,5 @@
 import encrypt from "bcryptjs";
+import { randomBytes } from "crypto";
 import dash from "../helpers/logger.js";
 import sendMail from "../helpers/send-mail.js";
 import User from "../models/user-model.js";
@@ -26,15 +27,13 @@ const register = async (req, res) => {
 
     const encryptedPassword = await encrypt.hash(password, 12);
 
+    const randomUserName = email.split("@")[0] + randomBytes(4).toString("hex");
+
     await User.create({
+      userName: randomUserName,
       email,
       password: encryptedPassword,
     });
-
-    const msg =
-      "Thanks for creating your account with us. Please verify your account to use our services.";
-
-    await sendMail(email, "Registration successfull", msg);
 
     // send an email to the user for email verification
     res.status(201).json({

@@ -2,16 +2,12 @@ import Sequelize from "sequelize";
 import conn from "../db/db-connect.js";
 import User from "./user-model.js";
 
-const Tweets = conn.define("tweet", {
+const Followers = conn.define("followers", {
   id: {
     type: Sequelize.INTEGER,
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
-  },
-  tweet: {
-    type: Sequelize.TEXT,
-    allowNull: false,
   },
   userId: {
     type: Sequelize.INTEGER,
@@ -20,6 +16,13 @@ const Tweets = conn.define("tweet", {
       key: "id",
     },
   },
+  following: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: User,
+      key: "id",
+    },
+  },
 });
 
-export default Tweets;
+export default Followers;
