@@ -3,7 +3,6 @@ import dash from "../helpers/logger.js";
 import User from "../models/user-model.js";
 
 const isUser = async (req, res, next) => {
-  console.log("inside");
   const authHeader = req.get("authorization");
 
   try {
