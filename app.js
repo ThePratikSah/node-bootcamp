@@ -12,6 +12,8 @@ import tweetRoutes from "./routes/tweets.js";
 
 const app = express();
 
+const PORT = process.env.PORT || 3000;
+
 app.use(cors());
 
 app.use(express.json());
@@ -70,5 +72,5 @@ app.use("/follow", followRoutes);
 
 conn
   .sync()
-  .then(app.listen(3000, () => console.log("Server started")))
+  .then(app.listen(PORT, () => console.log("Server started")))
   .catch((e) => dash.error(`Error : ${e}`));
