@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import Sequelize from "sequelize";
 dotenv.config();
 
-const dbConnectionURL = process.env.DB_CONN_URL;
+const dbConnectionURL = process.env.JAWSDB_URL;
 
 let conn;
 
