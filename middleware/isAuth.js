@@ -14,7 +14,17 @@ const isUser = async (req, res, next) => {
 
     const token = authHeader.split(" ")[1];
 
-    const { id } = jwt.verify(token, "my-random-string-for-encoding");
+    let tokenData;
+
+    try {
+      tokenData = jwt.verify(token, "my-random-string-for-encoding");
+    } catch (error) {
+      return res.status(401).json({
+        msg: "Token expired",
+      });
+    }
+
+    const { id } = tokenData;
 
     if (!id) {
       return res.status(401).json({

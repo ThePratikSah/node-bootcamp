@@ -1,14 +1,13 @@
 // import {Sequelize, QueryTypes} from "sequelize";
+import pkg from "sequelize";
+import conn from "../db/db-connect.js";
 import dash from "../helpers/logger.js";
-import pkg from 'sequelize'
 const { QueryTypes } = pkg;
-import conn from '../db/db-connect.js'
 
 const fetchFollowing = async (req, res) => {
   try {
-
     const following = await conn.query(
-      "SELECT users.fullName, users.userName, users.profileImage FROM followers INNER JOIN users ON followers.following = users.id WHERE followers.userId = ?",
+      "SELECT users.id, users.fullName, users.userName, users.profileImage FROM followers INNER JOIN users ON followers.userId = users.id WHERE followers.following = ?",
       {
         type: QueryTypes.SELECT,
         replacements: [req.id],
@@ -16,7 +15,7 @@ const fetchFollowing = async (req, res) => {
     );
 
     res.status(201).json({
-      msg: "Followed successfully",
+      msg: "Following fetched successfully",
       following,
     });
   } catch (error) {

@@ -8,6 +8,7 @@ import authRoutes from "./routes/auth.js";
 import followRoutes from "./routes/follow.js";
 import profileRoutes from "./routes/profile.js";
 import tweetRoutes from "./routes/tweets.js";
+// import cron from 'node-cron';
 
 const app = express();
 
@@ -52,6 +53,10 @@ app.use(
     fileFilter: fileFilter,
   }).single("image")
 );
+
+// cron.schedule("59 59 23 * * *", () => {
+
+// });
 
 app.use("/img", express.static("./img"));
 
