@@ -3,6 +3,7 @@ import Tweets from "../models/tweets-model.js";
 import User from "../models/user-model.js";
 
 const fetchTweet = async (req, res) => {
+  const { offset } = req.body;
   try {
     User.hasMany(Tweets);
     Tweets.belongsTo(User);
@@ -19,6 +20,8 @@ const fetchTweet = async (req, res) => {
           },
         },
       ],
+      offset,
+      limit: 50,
     });
 
     res.status(200).json({

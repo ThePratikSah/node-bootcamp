@@ -13,6 +13,10 @@ const Tweets = conn.define("tweet", {
     type: Sequelize.TEXT,
     allowNull: false,
   },
+  imageUrl: {
+    type: Sequelize.TEXT,
+    allowNull: true,
+  },
   userId: {
     type: Sequelize.INTEGER,
     references: {

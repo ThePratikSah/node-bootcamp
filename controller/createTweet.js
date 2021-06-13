@@ -3,6 +3,11 @@ import Tweets from "../models/tweets-model.js";
 
 const createTweet = async (req, res) => {
   try {
+    const imageFile = req.file;
+    let filePath = "";
+
+    filePath = imageFile.path || "";
+
     const { tweet } = req.body;
 
     if (!tweet) {
@@ -13,6 +18,7 @@ const createTweet = async (req, res) => {
 
     await Tweets.create({
       tweet,
+      imageUrl: filePath,
       userId: req.id,
     });
 

@@ -5,6 +5,11 @@ import User from "../models/user-model.js";
 
 const login = async (req, res) => {
   const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({
+      msg: "Empty fields",
+    });
+  }
 
   try {
     // check if the user exists in db or not
