@@ -6,7 +6,8 @@ const createTweet = async (req, res) => {
     const imageFile = req.file;
     let filePath = "";
 
-    filePath = imageFile.path || "";
+    if (!imageFile) filePath = "";
+    else filePath = imageFile.path;
 
     const { tweet } = req.body;
 

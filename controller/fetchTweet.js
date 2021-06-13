@@ -20,6 +20,9 @@ const fetchTweet = async (req, res) => {
           },
         },
       ],
+      order: [
+        ["createdAt", "DESC"],
+      ],
       offset,
       limit: 50,
     });
