@@ -31,7 +31,7 @@ const downloadExcelOfFollowers = async (req, res) => {
 
   worksheet.addRows(followers);
 
-  workbook.xlsx.writeFile(`sheets/${fileName}.xlsx`);
+  await workbook.xlsx.writeFile(`sheets/${fileName}.xlsx`);
   res.download("sheets/" + fileName + ".xlsx");
 };
 
